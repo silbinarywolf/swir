@@ -53,3 +53,51 @@ func TestReadInvalidSWIRFFile(t *testing.T) {
 	_ = NewReader(Last, recordData)
 	t.Errorf("Expected test to panic before reaching this line\n")
 }
+
+func TestThreeInputsWriteThenReadInMemorySWIRFFile(t *testing.T) {
+	const (
+		Left  = 0
+		Right = 1
+		Jump  = 2
+		Last  = 3
+	)
+
+	// Write recording information
+	var recordData []byte
+	{
+		w := NewWriter(Last)
+		for i := 0; i < 5; i++ {
+			w.WriteFrame([]bool{
+				Left:  false,
+				Right: true,
+				Jump:  false,
+			})
+		}
+		recordData = w.Bytes()
+		if len(recordData) != 20 {
+			t.Errorf("Expected recording to be %d bytes", len(recordData))
+		}
+	}
+
+	// Read recording information
+	{
+		r := NewReader(Last, recordData)
+		for i := 0; i < 5; i++ {
+			keysDown := r.ReadFrame()
+			if keysDown[Left] {
+				t.Errorf("Frame %d: Expected Left input to be false, not true", i)
+			}
+			if keysDown[Jump] {
+				t.Errorf("Frame %d: Expected Jump input to be false, not true", i)
+			}
+			if !keysDown[Right] {
+				t.Errorf("Frame %d: Expected Right input to be true, not false", i)
+			}
+		}
+		keysDown := r.ReadFrame()
+		if keysDown != nil {
+			t.Errorf("Expected end of recording data, but there was more data")
+			return
+		}
+	}
+}
