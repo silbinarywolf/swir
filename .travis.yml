@@ -9,5 +9,19 @@ services:
 install:
   - export GO111MODULE=on
 
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - libasound2-dev
+      - libgl1-mesa-dev
+      - libalut-dev
+      - libxcursor-dev
+      - libxi-dev
+      - libxinerama-dev
+      - libxrandr-dev
+      - libxxf86vm-dev
+
 script:
   - go test ./...
