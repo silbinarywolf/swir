@@ -1,6 +1,10 @@
 package game
 
-import "github.com/silbinarywolf/swir/example/game/internal/game/input"
+import (
+	"math"
+
+	"github.com/silbinarywolf/swir/example/game/internal/game/input"
+)
 
 const (
 	playerMoveSpeed = 4
@@ -34,4 +38,11 @@ func (self *Player) Update() {
 	if input.ButtonCheck(input.Down) {
 		player.Y += playerMoveSpeed
 	}
+}
+
+// GetPlayerPos is used by tests
+func GetPlayerPos() (int, int) {
+	x := int(math.Floor(player.X))
+	y := int(math.Floor(player.Y))
+	return x, y
 }

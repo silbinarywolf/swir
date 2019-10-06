@@ -30,15 +30,29 @@ func testPlayRecordingUpdate(screen *ebiten.Image) error {
 
 func TestPlayRecording(t *testing.T) {
 	onMainThread(func() {
+		// Read recording file
 		const recordPath = "record.swirf"
 		recordData, err := ioutil.ReadFile(recordPath)
 		if err != nil {
 			t.Fatalf("Failed to load %s: %s", recordPath, err)
 		}
+
 		game.Init()
+
 		playback.RecordInit(recordData)
+		// Run tests at 4x the speed so they complete faster
+		ebiten.SetMaxTPS(ebiten.MaxTPS() * 4)
 		if err := ebiten.Run(testPlayRecordingUpdate, 320, 240, 2, "Hello world!"); err != nil {
 			if err == errPlaybackFinished {
+				const expectX = 128
+				const expectY = 92
+				x, y := game.GetPlayerPos()
+				if x != expectX ||
+					y != expectY {
+					t.Errorf("player was at (%d, %d) but the test expected them to be at (%d, %d)\n", x, y, expectX, expectY)
+					return
+				}
+				// Success!
 				return
 			}
 			t.Errorf("error: %s\n", err)
