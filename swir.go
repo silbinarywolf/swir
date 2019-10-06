@@ -19,3 +19,17 @@ var (
 	errInvalidKeySize     = errors.New("Incorrectly configured key count.")
 	errExpectedEventCode  = errors.New("Data is malformed. Expected event code for key down.")
 )
+
+type errInvalidVersionString struct {
+	badVersion string
+}
+
+func newErrInvalidVersionString(badVersion string) errInvalidVersionString {
+	return errInvalidVersionString{
+		badVersion: badVersion,
+	}
+}
+
+func (err *errInvalidVersionString) Error() string {
+	return "Unexpected version: '" + err.badVersion + "', expected '" + formatVersion + "'"
+}

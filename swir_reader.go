@@ -41,7 +41,7 @@ func (r *Reader) readHeader() {
 	}
 	version := string(versionData[:strSize])
 	if version != formatVersion {
-		panic("Unexpected version: '" + version + "', expected '" + formatVersion + "'")
+		panic(newErrInvalidVersionString(version))
 	}
 	var expectedInputKeyCount int32
 	if err := binary.Read(&r.buf, binary.LittleEndian, &expectedInputKeyCount); err != nil {
