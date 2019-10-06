@@ -3,6 +3,9 @@ language: go
 go:
   - "1.12"
 
+services:
+  - xvfb
+
 install:
   - export GO111MODULE=on
 
