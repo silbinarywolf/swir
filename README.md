@@ -16,21 +16,21 @@ go get github.com/silbinarywolf/swir
 
 ## Quick Start
 
-1) I recommend you download the following repo that has an example. The reason for putting the example in this seperate repository was to ensure that this library has minimal dependendencies.
+1) I recommend you download the following repo that has an example. The reason for putting the example in this seperate repository was to ensure that this package has minimal dependendencies.
 ```
 go get github.com/silbinarywolf/swir-examples
 ```
 
-2) Run the tests and observe the player moving by themselves
+2) Run the tests and observe the game playing itself
 ```
 go test ./...
 ```
 
-3) Dive into the code [here](https://github.com/silbinarywolf/swir-examples) and see how this library can be tied into an Ebiten game.
+3) Dive into the code [here](https://github.com/silbinarywolf/swir-examples) and see how this package can be tied into an Ebiten game.
 
 ## Requirements
 
-* Golang 1.13+
+* Golang 1.12+
 
 ## Documentation
 
@@ -38,7 +38,7 @@ go test ./...
 * [License](LICENSE.md)
 
 ## Ideas
-I have ideas and features that I'd like to look into adding in the future, however, for now this library achieves the bare-minimum of what I need. Do not wait for me to implement these if you want or need them!
+I have ideas and features that I'd like to look into adding in the future, however, for now this package achieves the bare-minimum of what I need. Do not wait for me to implement these if you want or need them!
 
 - Recording Random Number Seeds
 	- Not sure if this needs its own built-in API or if this is something a user should handle themselves. The Retro City Rampage talk on [automated testing](https://www.youtube.com/watch?v=W20t1zCZv8M) mentions that to keep tests working over time, you will want to decouple random seeds for gameplay and visual effects that don't actually affect gameplay. 
