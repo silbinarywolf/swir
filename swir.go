@@ -30,6 +30,6 @@ func newErrInvalidVersionString(badVersion string) errInvalidVersionString {
 	}
 }
 
-func (err *errInvalidVersionString) Error() string {
+func (err errInvalidVersionString) Error() string {
 	return "Unexpected version: '" + err.badVersion + "', expected '" + formatVersion + "'"
 }

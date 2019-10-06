@@ -42,8 +42,9 @@ func TestReadInvalidSWIRFFile(t *testing.T) {
 	}
 	defer func() {
 		if r := recover(); r != nil {
-			_, ok := r.(errInvalidVersionString)
-			if !ok {
+			var err error
+			err, _ = r.(errInvalidVersionString)
+			if err == nil {
 				t.Errorf("Unexpected error with panic: %s\n", r)
 				return
 			}
