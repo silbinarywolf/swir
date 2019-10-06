@@ -31,15 +31,17 @@ go test ./...
 * [Documentation](https://godoc.org/github.com/silbinarywolf/swir)
 * [License](LICENSE.md)
 
-## Features that may be considered in the future
-I have ideas and features that I'd like to look into adding in the future, however, for now this library achieves the bare-minimum of what I need.
+## Ideas
+I have ideas and features that I'd like to look into adding in the future, however, for now this library achieves the bare-minimum of what I need. Do not wait for me to implement these if you want or need them!
 
 - Recording Random Number Seeds
 	- Not sure if this needs its own built-in API or if this is something a user should handle themselves. The Retro City Rampage talk on [automated testing](https://www.youtube.com/watch?v=W20t1zCZv8M) mentions that to keep tests working over time, you will want to decouple random seeds for gameplay and visual effects that don't actually affect gameplay. 
 - Expose API to allow a user to write into the stream with custom events or behaviour (ie. level changed, log characters X/Y, etc)
 	- ie. `WriteEvent(event EventID, data []byte)`, where `EventID` is a constant between 1-127. (127-255 is reserved for internal events like keypresses)
 - Recording Mouse Movement / Click
-  - Ideally this would use deltas between frames to try and keep the recording file as small as possible
+	- Ideally this would use deltas between frames to try and keep the recording file as small as possible
+- Ability to stream recording information out to file system
+	- This would allow long-running game sessions to not consume too much memory. The benefit of this too is that you could potentially record a players game session and be able to playback exactly what they did to reproduce bugs.
 
 ## Credits
 
