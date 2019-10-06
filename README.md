@@ -4,7 +4,7 @@
 [![Documentation](https://godoc.org/github.com/silbinarywolf/swir?status.svg)](https://godoc.org/github.com/silbinarywolf/swir)
 [![Report Card](https://goreportcard.com/badge/github.com/silbinarywolf/swir)](https://goreportcard.com/report/github.com/silbinarywolf/swir)
 
-**WARNING: Backwards compatibility on the file format is currently not guaranteed. This will change once the repository is tagged at v1.0.0 and I complete my game. The reason for this is because Im not sure how**
+**WARNING: Backwards compatibility on the file format is currently not guaranteed. This will change once the repository is tagged at v1.0.0 and I complete my game. The reason for this is because I want to ensure it has key functionality I require before calling it stable at v1.0.0.**
 
 Basic input recording system that writes what keys are held down per frame to a stream of bytes. Each key that can be held down takes up 1-bit of space per frame. This stream of bytes can used to play a users gameplay back for purposes such as integration testing, replays and more.
 
@@ -32,7 +32,7 @@ I have ideas and features that I'd like to look into adding in the future, howev
 	- ie. `WriteEvent(event EventID, data []byte)`, where `EventID` is a constant between 1-127. (127-255 is reserved for internal events like keypresses)
 - Recording Mouse Movement / Click
   - Ideally this would use deltas between frames to try and keep the recording file as small as possible
-  
+
 ## Credits
 
 * [Brian Provinciano](https://www.youtube.com/watch?v=W20t1zCZv8M) for inspiration from their GDC Talk, "Automated Testing and Instant Replays in Retro City Rampage"
