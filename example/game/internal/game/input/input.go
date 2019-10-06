@@ -81,6 +81,8 @@ func ButtonUpdate() {
 		Up:    buttonStates[Up] != StateNone,
 		Down:  buttonStates[Down] != StateNone,
 	})
+
+	// DEBUG: Write out a record file, this is so we can update the test!
 	if ebiten.IsKeyPressed(ebiten.Key1) {
 		data := recorder.Bytes()
 		if err := ioutil.WriteFile("record.swirf", data, 0644); err != nil {
