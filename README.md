@@ -8,19 +8,25 @@
 
 Basic input recording system that writes what keys are held down per frame to a stream of bytes. Each key that can be held down takes up 1-bit of space per frame. This stream of bytes can used to play a users gameplay back for purposes such as integration testing, replays and more.
 
-## Quick Start
+## Install
 
-1) Install
 ```
 go get github.com/silbinarywolf/swir
 ```
 
-2) Watch the existing recording test
+## Quick Start
+
+1) I recommend you download the following repo that has an example. The reason for putting the example in this seperate repository was to ensure that this library has minimal dependendencies.
+```
+go get github.com/silbinarywolf/swir-examples
+```
+
+2) Run the tests and observe the player moving by themselves
 ```
 go test ./...
 ```
 
-3) Look at the code in example/game to see how this system works and can be tied together.
+3) Dive into the code [here](https://github.com/silbinarywolf/swir-examples) and see how this library can be tied into an Ebiten game.
 
 ## Requirements
 
