@@ -24,25 +24,51 @@ func NewReader(expectedInputKeyCount int, data []byte) *Reader {
 }
 
 func (r *Reader) readHeader() {
-	var strSize byte
-	if err := binary.Read(&r.buf, binary.LittleEndian, &strSize); err != nil {
-		panic(err)
-	}
-	if strSize > versionSizeByteMax {
-		panic(errInvalidVersionSize)
-	}
-	var versionData [versionSizeByteMax]byte
-	for i := byte(0); i < strSize; i++ {
-		var c byte
-		if err := binary.Read(&r.buf, binary.LittleEndian, &c); err != nil {
+	// Check if expected file type
+	{
+		var fileTypeLen byte
+		if err := binary.Read(&r.buf, binary.LittleEndian, &fileTypeLen); err != nil {
 			panic(err)
 		}
-		versionData[i] = c
+		if fileTypeLen != byte(len(fileType)) {
+			panic(errInvalidFileType)
+		}
+		var fileTypeData [len(fileType)]byte
+		for i := byte(0); i < fileTypeLen; i++ {
+			var c byte
+			if err := binary.Read(&r.buf, binary.LittleEndian, &c); err != nil {
+				panic(err)
+			}
+			fileTypeData[i] = c
+		}
+		if fileType != string(fileTypeData[:fileTypeLen]) {
+			panic(errInvalidFileType)
+		}
 	}
-	version := string(versionData[:strSize])
-	if version != formatVersion {
-		panic(newErrInvalidVersionString(version))
+
+	// Check if expected version
+	{
+		var strSize byte
+		if err := binary.Read(&r.buf, binary.LittleEndian, &strSize); err != nil {
+			panic(err)
+		}
+		if strSize > versionSizeByteMax {
+			panic(errInvalidVersionSize)
+		}
+		var versionData [versionSizeByteMax]byte
+		for i := byte(0); i < strSize; i++ {
+			var c byte
+			if err := binary.Read(&r.buf, binary.LittleEndian, &c); err != nil {
+				panic(err)
+			}
+			versionData[i] = c
+		}
+		version := string(versionData[:strSize])
+		if version != formatVersion {
+			panic(newErrInvalidVersionString(version))
+		}
 	}
+
 	var expectedInputKeyCount int32
 	if err := binary.Read(&r.buf, binary.LittleEndian, &expectedInputKeyCount); err != nil {
 		panic(err)

@@ -19,16 +19,31 @@ func NewWriter(expectedInputKeyCount int) *Writer {
 }
 
 func (w *Writer) writeHeader() {
-	strSize := byte(len(formatVersion))
-	if strSize > versionSizeByteMax {
-		panic(errInvalidVersionSize)
+	// Write file format
+	{
+		fileTypeSize := byte(len(fileType))
+		if err := binary.Write(&w.buf, binary.LittleEndian, fileTypeSize); err != nil {
+			panic(err)
+		}
+		if err := binary.Write(&w.buf, binary.LittleEndian, []byte(fileType)); err != nil {
+			panic(err)
+		}
 	}
-	if err := binary.Write(&w.buf, binary.LittleEndian, strSize); err != nil {
-		panic(err)
+
+	// Write version
+	{
+		strSize := byte(len(formatVersion))
+		if strSize > versionSizeByteMax {
+			panic(errInvalidVersionSize)
+		}
+		if err := binary.Write(&w.buf, binary.LittleEndian, strSize); err != nil {
+			panic(err)
+		}
+		if err := binary.Write(&w.buf, binary.LittleEndian, []byte(formatVersion)); err != nil {
+			panic(err)
+		}
 	}
-	if err := binary.Write(&w.buf, binary.LittleEndian, []byte(formatVersion)); err != nil {
-		panic(err)
-	}
+
 	if err := binary.Write(&w.buf, binary.LittleEndian, w.expectedInputKeyCount); err != nil {
 		panic(err)
 	}
