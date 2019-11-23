@@ -31,10 +31,10 @@ func TestReadAndProcessValidSWIRFFile(t *testing.T) {
 	}
 }
 
-func TestReadInvalidSWIRFFile(t *testing.T) {
+func TestReadInvalidVersionFile(t *testing.T) {
 	var err error
 
-	const recordPath = "testdata/corrupt.swirf"
+	const recordPath = "testdata/invalid_version.swirf"
 	recordData, err := ioutil.ReadFile(recordPath)
 	if err != nil {
 		t.Errorf("Failed to load %s: %s\n", recordPath, err)
@@ -45,7 +45,31 @@ func TestReadInvalidSWIRFFile(t *testing.T) {
 			var err error
 			err, _ = r.(errInvalidVersionString)
 			if err == nil {
-				t.Errorf("Unexpected error with panic: %s\n", r)
+				t.Errorf("Expected to get version error with panic: %s\n", r)
+				return
+			}
+			// Hooray! We got the expected error.
+		}
+	}()
+	_ = NewReader(Last, recordData)
+	t.Errorf("Expected test to panic before reaching this line\n")
+}
+
+func TestReadInvalidFileFormat(t *testing.T) {
+	var err error
+
+	const recordPath = "testdata/invalid_file_format.png"
+	recordData, err := ioutil.ReadFile(recordPath)
+	if err != nil {
+		t.Errorf("Failed to load %s: %s\n", recordPath, err)
+		return
+	}
+	defer func() {
+		if r := recover(); r != nil {
+			var err error
+			err, _ = r.(error)
+			if err != errInvalidFileType {
+				t.Errorf("Expected to get file format error with panic: %s\n", r)
 				return
 			}
 			// Hooray! We got the expected error.
@@ -75,8 +99,9 @@ func TestThreeInputsWriteThenReadInMemorySWIRFFile(t *testing.T) {
 			})
 		}
 		recordData = w.Bytes()
-		if len(recordData) != 20 {
-			t.Errorf("Expected recording to be %d bytes", len(recordData))
+		const expectedBytes = 26
+		if len(recordData) != expectedBytes {
+			t.Errorf("Expected recording file to be %d bytes but got %d bytes", expectedBytes, len(recordData))
 		}
 	}
 
